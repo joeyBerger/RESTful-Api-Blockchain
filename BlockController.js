@@ -1,5 +1,6 @@
 const SHA256 = require('crypto-js/sha256');
 const BlockClass = require('./Block.js');
+const Blockchain = require('./simpleChain.js')
 
 /**
  * Controller Definition to encapsulate routes to work with blocks
@@ -16,6 +17,7 @@ class BlockController {
         this.initializeMockData();
         this.getBlockByIndex();
         this.postNewBlock();
+        this.myBlockChain = new Blockchain.Blockchain();
     }
 
     /**
@@ -25,10 +27,12 @@ class BlockController {
         this.server.route({
             method: 'GET',
             path: '/api/block/{index}',
-            handler: (request, h) => {
+            handler: async (request, h) => {
+                let myBlockChain = new Blockchain.Blockchain();
                 let blockIndex = (parseInt(request.params.index));
-                return this.blocks[blockIndex];
-                //return `Hello ${encodeURIComponent(request.params.index)}!`;
+                const result = await this.myBlockChain.getBlock(blockIndex);         
+                //console.log("logging",typeof(result));   
+                return result;
             }
         });
     }
@@ -40,12 +44,13 @@ class BlockController {
         this.server.route({
             method: 'POST',
             path: '/api/block',
-            handler: (request, h) => {
-                let blockAux = new BlockClass.Block(`Test Data #${this.blocks.length}`);
-                blockAux.height = this.blocks.length;
-                blockAux.hash = SHA256(JSON.stringify(blockAux)).toString();
-                this.blocks.push(blockAux);
-                return blockAux;
+            handler: async (request, h) => {
+                if (request.payload !== null && request.payload.body !== undefined && request.payload.body !== "")
+                {
+                    const result = await this.myBlockChain.addBlock(new BlockClass.Block(request.payload.body));
+                    return result;                                   
+                }
+                return "An Entry For 'Body' Is Necessary To Create New Block";
             }
         });
     }
@@ -63,8 +68,6 @@ class BlockController {
             }
         }
     }
-
-
 }
 
 /**
