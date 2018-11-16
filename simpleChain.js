@@ -89,11 +89,8 @@ class Blockchain {
             if (blockHeight > -1) {
                 db.get(blockHeight, function(err, value) {
                     if (err) {
-                        //console.log('Not found!', err);
-                        //console.log(err);
-                        reject(err);
-                        //resolve(JSON.parse(err));
-                        //resolve(SHA256(JSON.stringify(err)).toString());
+                        resolve("Requested Block Does Not Exist");
+                        //reject(err);
                     } else {
                         resolve(JSON.parse((value)));
                     }
@@ -173,57 +170,5 @@ class Blockchain {
             })
         })
     }
-
-    test() {
-        console.log("test")
-        return "test"
-    }
 }
 module.exports.Blockchain = Blockchain;
-
-// let myBlockChain = new Blockchain();
-// (function theLoop (i) {
-//     setTimeout(function () {
-//         let blockTest = new Block.Block("Test Block - " + (i + 1));
-//         myBlockChain.addBlock(blockTest).then((result) => {
-//             console.log(result);
-//             i++;
-//             if (i < 10) theLoop(i);
-//         });
-//     }, 1000);
-//   })(0);
-
-
-// (function theLoop(i) {
-//     setTimeout(function() {
-//         let blockTest = new Block("Test Block - " + (i + 1));
-//         myBlockChain.addBlock(blockTest).then((result) => {
-//             i++;
-//             if (i < 5) theLoop(i);
-//         });
-//     }, 1 * 1000);
-// })(0);
-
-// console.log(myBlockChain.validateBlock(0));
-// console.log(myBlockChain.validateChain());
-
-// myBlockChain.getBlock(40).then((result) => {
-//                 console.log("final",result);
-//             }).catch((result) => {
-//                 console.log("in catch");
-//             });
-
-
-// let testBlock = new Block.Block("fuck you");
-// testBlock.height = 2;
-// testBlock.time = 348957894343572934;
-// testBlock.previousBlockHash = "fuckyoufuckyou";
-// testBlock.hash = "asdfadsfdasdsaf";  //SHA256(JSON.stringify(testBlock)).toString();
-// let tempStringifiedObj = JSON.stringify(testBlock).toString();
-
-// db.put(testBlock.height, tempStringifiedObj, function(err) {
-//   if (err) return console.log('Block ' + newBlock.height + ' submission failed', err);
-// })
-
-
-
