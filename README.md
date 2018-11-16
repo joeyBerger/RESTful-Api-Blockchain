@@ -18,8 +18,8 @@ Access to a operating system capable of sending GET and POST requests.
 * If the posted data payload is not in an acceptable format, a string formatted error message is returned.
 
 #### Built With
-Node.js
-Hapi.js
+* Node.js
+* Hapi.js
 
 #### Authors
 Joey Berger
